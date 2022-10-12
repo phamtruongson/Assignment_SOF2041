@@ -2,7 +2,9 @@
 #Bài Assignment môn Dự án mẫu - SOF2041 FPoly Kỳ FALL 2022
 
 #Mô tả Luồng:
+
 ##Bắt đầu:
+
 1.Để thêm sản phẩm và thanh toán cần tạo hóa đơn mới hoặc chọn một hóa đơn có trạng thái là chờ thánh toán
 2.Khi ấn tạo hóa đơn chương trình sẽ tạo một hóa đơn mới với mã hóa đơn chương trình tự gen, ngày tạo là 
 	thời gian hệ thông, trạng thái là chờ thanh toán, idNhanVien có thể fix cứng là một nhân viên nào đó trong bảng nhân viên hoặc để null.
