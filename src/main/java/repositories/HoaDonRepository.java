@@ -11,6 +11,11 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import viewmodels.HoaDonResponse;
 
+/**
+ *
+ * @author sonpt_ph19600
+ */
+
 public class HoaDonRepository extends repositories.Repository{
 
     public List<HoaDonResponse> getAll() {        

@@ -9,6 +9,11 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import repositories.Repository;
 
+/**
+ *
+ * @author sonpt_ph19600
+ */
+
 public class ChiTietSPRepository extends Repository{
     
     public boolean updateSoLuong(int soLuong, UUID id) {

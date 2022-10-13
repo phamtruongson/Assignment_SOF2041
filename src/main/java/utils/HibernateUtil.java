@@ -20,6 +20,11 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.Environment;
 import org.hibernate.service.ServiceRegistry;
 
+/**
+ *
+ * @author sonpt_ph19600
+ */
+
 public class HibernateUtil {
 
     private static final SessionFactory FACTORY;
@@ -65,25 +70,6 @@ public class HibernateUtil {
 
     public static void main(String[] args) {
         getFACTORY();
-//        Session session = getFACTORY().openSession();
-//        Transaction trans = session.beginTransaction();
-//        HoaDon hoaDon = new HoaDon();
-//        hoaDon.setMa("HD12D3");
-//        session.save(hoaDon);
-//
-//        ChiTietSP ct = new ChiTietSP();
-//        session.save(ct);
-//
-//        HoaDonChiTiet hoaDonChiTiet = new HoaDonChiTiet();
-//        hoaDonChiTiet.setIdChiTietSP(ct);
-//        hoaDonChiTiet.setIdHoaDon(hoaDon);
-//        hoaDonChiTiet.setDonGia(new BigDecimal(1000));
-//        session.save(hoaDonChiTiet);
-//        trans.commit();
-//        session.close();
-//        ChiTietSPRepository chiTietSPRepository = new ChiTietSPRepository();
-//        List<SanPhamCustom> list = chiTietSPRepository.getAll();
-//        System.out.println(list);ì
     }
 
 }

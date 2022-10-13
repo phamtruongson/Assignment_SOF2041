@@ -2,7 +2,6 @@ package views;
 
 import domainmodels.HoaDon;
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -12,7 +11,6 @@ import java.util.UUID;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
-import org.hibernate.Session;
 import services.HoaDonChiTietService;
 import services.HoaDonService;
 import services.impl.HoaDonServiceImpl;
@@ -23,6 +21,11 @@ import services.SanPhamService;
 import services.impl.HoaDonChiTietServiceImpl;
 import utils.HibernateUtil;
 import viewmodels.HoaDonResponse;
+
+/**
+ *
+ * @author sonpt_ph19600
+ */
 
 public class ViewBanhang extends javax.swing.JFrame {
 
@@ -132,7 +135,6 @@ public class ViewBanhang extends javax.swing.JFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         tblSanPham = new javax.swing.JTable();
         txtTimKiem = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("FpolyShop");
@@ -443,13 +445,6 @@ public class ViewBanhang extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jButton1.setText("jButton1");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -459,8 +454,6 @@ public class ViewBanhang extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jButton1)
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -500,13 +493,8 @@ public class ViewBanhang extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(17, 17, 17)
-                        .addComponent(jButton1))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         jPanel1.getAccessibleContext().setAccessibleName("");
@@ -756,11 +744,6 @@ public class ViewBanhang extends javax.swing.JFrame {
         txtTienThua.setText(BigDecimal.valueOf(tienKhachDua).subtract(tongTien).toString());
     }//GEN-LAST:event_txtTienKhachDuaCaretUpdate
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        LocalDateTime time = LocalDateTime.now();
-        System.out.println(time.getMinute());
-    }//GEN-LAST:event_jButton1ActionPerformed
-
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -800,7 +783,6 @@ public class ViewBanhang extends javax.swing.JFrame {
     private javax.swing.JButton btnTaoHoaDon;
     private javax.swing.JButton btnThanhToan;
     private javax.swing.ButtonGroup buttonGroup1;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

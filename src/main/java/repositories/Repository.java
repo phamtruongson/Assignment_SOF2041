@@ -12,6 +12,7 @@ import utils.HibernateUtil;
  *
  * @author sonpt_ph19600
  */
+
 public abstract class Repository {
     
     public static Session session;

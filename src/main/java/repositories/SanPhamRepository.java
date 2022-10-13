@@ -11,6 +11,11 @@ import org.hibernate.transform.Transformers;
 import repositories.Repository;
 import viewmodels.SanPhamResponse;
 
+/**
+ *
+ * @author sonpt_ph19600
+ */
+
 public class SanPhamRepository extends Repository{
 
     public List<SanPhamResponse> findAllByName(String name) {
