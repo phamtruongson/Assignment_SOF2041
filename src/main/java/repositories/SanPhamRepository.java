@@ -1,5 +1,6 @@
 package repositories;
 
+import domainmodels.SanPham;
 import utils.HibernateUtil;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +17,7 @@ import viewmodels.SanPhamResponse;
  * @author sonpt_ph19600
  */
 
-public class SanPhamRepository extends Repository{
+public class SanPhamRepository extends Repository<SanPham, UUID, SanPhamResponse>{
 
     public List<SanPhamResponse> findAllByName(String name) {
         List<SanPhamResponse> list = new ArrayList<>();

@@ -14,7 +14,7 @@ import utils.HibernateUtil;
  *
  * @author sonpt_ph19600
  */
-public class HoaDonChiTietRepository extends Repository{
+public class HoaDonChiTietRepository extends Repository<HoaDonChiTiet, UUID, HoaDonChiTietResponse>{
 
     public List<HoaDonChiTietResponse> search(UUID idHoaDon) {
         List<HoaDonChiTietResponse> list = new ArrayList<>();

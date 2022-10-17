@@ -8,13 +8,14 @@ import javax.persistence.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import repositories.Repository;
+import viewmodels.ChiTietSPResponse;
 
 /**
  *
  * @author sonpt_ph19600
  */
 
-public class ChiTietSPRepository extends Repository{
+public class ChiTietSPRepository extends Repository<ChiTietSP, UUID, ChiTietSPResponse> {
     
     public boolean updateSoLuong(int soLuong, UUID id) {
         try {
@@ -31,5 +32,16 @@ public class ChiTietSPRepository extends Repository{
             return false;
         }
     }
+
+    @Override
+    public List<ChiTietSPResponse> getAll() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public ChiTietSP findById(UUID id) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
     
 }

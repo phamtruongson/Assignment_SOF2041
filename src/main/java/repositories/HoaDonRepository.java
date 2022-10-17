@@ -16,7 +16,7 @@ import viewmodels.HoaDonResponse;
  * @author sonpt_ph19600
  */
 
-public class HoaDonRepository extends repositories.Repository{
+public class HoaDonRepository extends Repository<HoaDon, UUID, HoaDonResponse>{
 
     public List<HoaDonResponse> getAll() {        
         List<HoaDonResponse> list = new ArrayList<>();

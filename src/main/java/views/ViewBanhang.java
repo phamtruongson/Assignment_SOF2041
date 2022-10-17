@@ -50,11 +50,11 @@ public class ViewBanhang extends javax.swing.JFrame {
         hoaDonChiTietService = new HoaDonChiTietServiceImpl();
         mapGioHang = new HashMap<>();
         listHoaDonResponse = hoaDonService.getAll();
-        loadDataHoaDon(listHoaDonResponse);
-        loadDataChiTietSP();
+        loadTableHoaDon(listHoaDonResponse);
+        loadTableChiTietSP();
     }
 
-    private void loadDataChiTietSP() {
+    private void loadTableChiTietSP() {
         modelSanPham.setRowCount(0);
         int index = 1;
         listSanPhamResponse = sanPhamService.findAllByName(txtTimKiem.getText());
@@ -64,7 +64,7 @@ public class ViewBanhang extends javax.swing.JFrame {
         }
     }
 
-    private void loadDataHoaDon(List<HoaDonResponse> list) {
+    private void loadTableHoaDon(List<HoaDonResponse> list) {
         modelHoaDon.setRowCount(0);
         int index = 1;
         for (HoaDonResponse hd : list) {
@@ -73,7 +73,7 @@ public class ViewBanhang extends javax.swing.JFrame {
         }
     }
 
-    private void loadDataGioHang() {
+    private void loadTableGioHang() {
         modelGioHang.setRowCount(0);
         int index = 1;
         for (Map.Entry<UUID, HoaDonChiTietResponse> entry : mapGioHang.entrySet()) {
@@ -505,7 +505,7 @@ public class ViewBanhang extends javax.swing.JFrame {
 
     private void txtTimKiemCaretUpdate(javax.swing.event.CaretEvent evt) {//GEN-FIRST:event_txtTimKiemCaretUpdate
         try {
-            loadDataChiTietSP();
+            loadTableChiTietSP();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -587,7 +587,7 @@ public class ViewBanhang extends javax.swing.JFrame {
             }
             if (tongSoLuong == 0) {
                 mapGioHang.remove(hoaDonChiTiet.getIdChiTietSP());
-                loadDataGioHang();
+                loadTableGioHang();
                 tinhTongTien();
             }
             if (tongSoLuong > sanPham.getSoLuongSPTon()) {
@@ -597,7 +597,7 @@ public class ViewBanhang extends javax.swing.JFrame {
             hoaDonChiTiet.setSoLuongSP(tongSoLuong);
             mapGioHang.replace(hoaDonChiTiet.getIdChiTietSP(), hoaDonChiTiet);
         }
-        loadDataGioHang();
+        loadTableGioHang();
         tinhTongTien();
     }//GEN-LAST:event_tblSanPhamMouseClicked
 
@@ -615,9 +615,9 @@ public class ViewBanhang extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Tạo hóa đơn thành công");
         }
         mapGioHang.clear();
-        loadDataGioHang();
+        loadTableGioHang();
         listHoaDonResponse = hoaDonService.getAll();
-        loadDataHoaDon(listHoaDonResponse);
+        loadTableHoaDon(listHoaDonResponse);
         int size = listHoaDonResponse.size();
         for (int i = 0; i < size; i++) {
             HoaDonResponse hoaDon = listHoaDonResponse.get(i);
@@ -661,11 +661,11 @@ public class ViewBanhang extends javax.swing.JFrame {
             return;
         }
         String result = hoaDonChiTietService.pay(new ArrayList<>(mapGioHang.values()));
-        loadDataChiTietSP();
+        loadTableChiTietSP();
         mapGioHang.clear();
-        loadDataGioHang();
+        loadTableGioHang();
         listHoaDonResponse = hoaDonService.getAll();
-        loadDataHoaDon(listHoaDonResponse);
+        loadTableHoaDon(listHoaDonResponse);
         txtMaHD.setText("");
         txtTenNV.setText("");
         txtNgayTao.setText("");
@@ -686,32 +686,32 @@ public class ViewBanhang extends javax.swing.JFrame {
         for (HoaDonChiTietResponse hdct : list) {
             mapGioHang.put(hdct.getIdChiTietSP(), hdct);
         }
-        loadDataGioHang();
+        loadTableGioHang();
         tinhTongTien();
     }//GEN-LAST:event_tblHoaDonMouseClicked
 
     private void rdoDaHuyMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_rdoDaHuyMouseClicked
         //Radio Lọc đã hủy
         listHoaDonResponse = hoaDonService.search(-1);
-        loadDataHoaDon(listHoaDonResponse);
+        loadTableHoaDon(listHoaDonResponse);
     }//GEN-LAST:event_rdoDaHuyMouseClicked
 
     private void rdoDaThanhToanMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_rdoDaThanhToanMouseClicked
         //Radio lọc đã thanh toán
         listHoaDonResponse = hoaDonService.search(1);
-        loadDataHoaDon(listHoaDonResponse);
+        loadTableHoaDon(listHoaDonResponse);
     }//GEN-LAST:event_rdoDaThanhToanMouseClicked
 
     private void rdoTatCaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_rdoTatCaMouseClicked
         //Radio lọc tất cả
         listHoaDonResponse = hoaDonService.getAll();
-        loadDataHoaDon(listHoaDonResponse);
+        loadTableHoaDon(listHoaDonResponse);
     }//GEN-LAST:event_rdoTatCaMouseClicked
 
     private void rdoChoThanhToanMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_rdoChoThanhToanMouseClicked
         //Radio lọc chờ thanh toán
         listHoaDonResponse = hoaDonService.search(0);
-        loadDataHoaDon(listHoaDonResponse);
+        loadTableHoaDon(listHoaDonResponse);
     }//GEN-LAST:event_rdoChoThanhToanMouseClicked
 
     private void txtTienKhachDuaCaretUpdate(javax.swing.event.CaretEvent evt) {//GEN-FIRST:event_txtTienKhachDuaCaretUpdate
