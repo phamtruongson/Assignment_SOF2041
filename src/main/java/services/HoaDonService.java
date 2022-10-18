@@ -2,7 +2,7 @@ package services;
 
 import domainmodels.HoaDon;
 import java.util.List;
-import viewmodels.HoaDonResponse;
+import viewmodels.SaleViewHoaDonResponse;
 
 /**
  *
@@ -11,9 +11,9 @@ import viewmodels.HoaDonResponse;
 
 public interface HoaDonService {
     
-    List<HoaDonResponse> getAll();
+    List<SaleViewHoaDonResponse> getAll();
     
-    List<HoaDonResponse> search(int tinhTrang);
+    List<SaleViewHoaDonResponse> search(int tinhTrang);
     
     HoaDon createBill();
     

@@ -7,7 +7,7 @@ import java.util.List;
 import repositories.HoaDonRepository;
 import repositories.HoaDonRepository;
 import services.HoaDonService;
-import viewmodels.HoaDonResponse;
+import viewmodels.SaleViewHoaDonResponse;
 
 /**
  *
@@ -23,12 +23,12 @@ public class HoaDonServiceImpl implements HoaDonService{
     }
     
     @Override
-    public List<HoaDonResponse> getAll() {
+    public List<SaleViewHoaDonResponse> getAll() {
         return hoaDonRepository.getAll();
     }
     
     @Override
-    public List<HoaDonResponse> search(int tinhTrang) {
+    public List<SaleViewHoaDonResponse> search(int tinhTrang) {
         return hoaDonRepository.findByTinhTrang(tinhTrang);
     }
 
@@ -41,10 +41,7 @@ public class HoaDonServiceImpl implements HoaDonService{
         hoaDon.setMa(maHd);
         hoaDon.setNgayTao(new Date(new java.util.Date().getTime()));
         hoaDon.setTinhTrang(0);        
-        hoaDonRepository.openTranSaction();
-        HoaDon check = hoaDonRepository.save(hoaDon);
-        hoaDonRepository.save(hoaDon);
-        hoaDonRepository.commitTranSaction();
+        HoaDon check = hoaDonRepository.saveOrUpdate(hoaDon);
         return check;
     }
     

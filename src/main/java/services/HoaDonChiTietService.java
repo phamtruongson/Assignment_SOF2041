@@ -2,7 +2,7 @@ package services;
 
 import java.util.List;
 import java.util.UUID;
-import viewmodels.HoaDonChiTietResponse;
+import viewmodels.SaleViewHoaDonChiTietResponse;
 
 /**
  *
@@ -11,8 +11,8 @@ import viewmodels.HoaDonChiTietResponse;
 
 public interface HoaDonChiTietService {
     
-    List<HoaDonChiTietResponse> search(UUID idHoaDon);
+    List<SaleViewHoaDonChiTietResponse> search(UUID idHoaDon);
     
-    String pay(List<HoaDonChiTietResponse> list);
+    String pay(List<SaleViewHoaDonChiTietResponse> list);
     
 }

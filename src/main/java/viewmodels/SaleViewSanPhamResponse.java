@@ -12,18 +12,21 @@ import lombok.NoArgsConstructor;
  */
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
-public class HoaDonChiTietResponse {
+@AllArgsConstructor
+public class SaleViewSanPhamResponse {
 
-    private UUID idChiTietSP;
-    private UUID idHoaDon;
+    private UUID id;
     private String maSP;
     private String tenSP;
-    private Integer soLuongSP;
-    private BigDecimal donGia;
+    private Integer namBH;
+    private String moTa;
+    private Integer soLuongSPTon;
+    private BigDecimal giaNhap;
+    private BigDecimal giaBan;
 
     public Object[] toDataRow(int index) {
-        return new Object[]{index, maSP, tenSP, soLuongSP, donGia,new BigDecimal(soLuongSP).multiply(donGia)};
+        return new Object[]{index, maSP, tenSP, namBH, moTa, soLuongSPTon, giaNhap, giaBan};
     }
+
 }

@@ -9,35 +9,35 @@ import javax.persistence.Query;
 import javax.swing.JOptionPane;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-import viewmodels.HoaDonResponse;
+import viewmodels.SaleViewHoaDonResponse;
 
 /**
  *
  * @author sonpt_ph19600
  */
 
-public class HoaDonRepository extends Repository<HoaDon, UUID, HoaDonResponse>{
+public class HoaDonRepository extends Repository<HoaDon, UUID, SaleViewHoaDonResponse>{
 
-    public List<HoaDonResponse> getAll() {        
-        List<HoaDonResponse> list = new ArrayList<>();
+    public List<SaleViewHoaDonResponse> getAll() {        
+        List<SaleViewHoaDonResponse> list = new ArrayList<>();
         try {            
-            session = HibernateUtil.getFACTORY().openSession();
-            String hql = "SELECT new viewmodels.HoaDonResponse "
+            session = HibernateUtil.getSession();          
+            String hql = "SELECT new viewmodels.SaleViewHoaDonResponse "
                     + " (a.id, a.ma, a.ngayTao, b.ten, a.tinhTrang) "
                     + " FROM HoaDon a LEFT JOIN a.nhanVien b ORDER BY CONVERT(BIGINT,SUBSTRING(a.ma, 3,10)) DESC";
             Query query = session.createQuery(hql);   
-            list = query.getResultList();
+            list = query.getResultList();            
         } catch (Exception e) {
             e.printStackTrace();
         }
         return list;
     }
     
-    public List<HoaDonResponse> findByTinhTrang(int tinhTrang) {        
-        List<HoaDonResponse> list = new ArrayList<>();
+    public List<SaleViewHoaDonResponse> findByTinhTrang(int tinhTrang) {        
+        List<SaleViewHoaDonResponse> list = new ArrayList<>();
         try {            
-            session = HibernateUtil.getFACTORY().openSession();
-            String hql = "SELECT new viewmodels.HoaDonResponse "
+            session = HibernateUtil.getSession();
+            String hql = "SELECT new viewmodels.SaleViewHoaDonResponse "
                     + " (a.id, a.ma, a.ngayTao, b.ten, a.tinhTrang) "
                     + " FROM HoaDon a LEFT JOIN a.nhanVien b WHERE a.tinhTrang = :tinhTrang";
             Query query = session.createQuery(hql); 
@@ -50,21 +50,23 @@ public class HoaDonRepository extends Repository<HoaDon, UUID, HoaDonResponse>{
         return list;
     }
 
-    public HoaDon save(HoaDon hoaDon) {
-        try {
-            session.save(hoaDon);
-            return hoaDon;
-        } catch (Exception e) {
-            e.printStackTrace();
-            trans.rollback();
-            session.close();
-            return null;
-        }
-    }   
+//    public HoaDon save(HoaDon hoaDon) {
+//        try {
+//            session
+//            session.save(hoaDon);
+//            return hoaDon;
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            trans.rollback();
+//            session.close();
+//            return null;
+//        }
+//    }   
     
     public boolean updateTinhTrang(UUID id, int tinhTrang){
-        try {            
-            openTranSaction();
+        try {     
+            session = HibernateUtil.getSession(); 
+            trans = session.beginTransaction();
             String hql = "UPDATE HoaDon SET tinhTrang = :tinhTrang WHERE id = :id";
             Query query = session.createQuery(hql);
             query.setParameter("tinhTrang", tinhTrang);
@@ -72,7 +74,7 @@ public class HoaDonRepository extends Repository<HoaDon, UUID, HoaDonResponse>{
             if (query.executeUpdate() < 1) {
                 return false;
             }
-            commitTranSaction();
+            trans.commit();
             return true;
         } catch (Exception e) {
             e.printStackTrace();

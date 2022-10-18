@@ -16,57 +16,62 @@ import viewmodels.NSXResponse;
 
 public abstract class Repository<Entity, Id, Response> {
     
-    protected static Session session ;
-    protected static Transaction trans;   
-    protected static String className;
-    protected static String resCon;
-
-    public void openTranSaction() {
-        session = HibernateUtil.getFACTORY().openSession();
-        trans = session.beginTransaction();
-    }
-
-
-    public void commitTranSaction() {
-        trans.commit();
-        session.close();
-    }
+    protected Session session ;
+    protected Transaction trans;   
+    protected String className;
+    protected String resCon;
     
     public List<Response> getAll(){
         List<Response> list = new ArrayList<>();
         try {          
-            session = HibernateUtil.getFACTORY().openSession();
+            session = HibernateUtil.getSession();
             String hql = "SELECT " + resCon + " FROM " + className + " a";
             Query query = session.createQuery(hql);
             list = query.getResultList();
-            session.close();
         } catch (Exception e) {
             e.printStackTrace();
-            session.close();
             return null;
         }
         return list;
     }
     
-    public boolean saveOrUpdate(Entity entity) {
+    public boolean saveAll(List<Entity> list) {
         try {
-            openTranSaction();
-            session.saveOrUpdate(entity);          
-            commitTranSaction();
+            session = HibernateUtil.getSession();
+            trans = session.beginTransaction();
+            for (Entity entity : list) {
+                session.saveOrUpdate(entity);                
+            }                     
+            trans.commit();
         } catch (Exception e) {
+            trans.rollback();
             e.printStackTrace();
-            session.close();
             return false;
         }
         return true;
     }
+    
+    public Entity saveOrUpdate(Entity entity) {
+        try {
+            session = HibernateUtil.getSession();
+            trans = session.beginTransaction();
+            session.saveOrUpdate(entity);          
+            trans.commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+        return entity;
+    }
         
     public boolean detele(Entity entity) {
         try {
-            openTranSaction();
+            session = HibernateUtil.getSession();
+            trans = session.beginTransaction();
             session.delete(entity);          
-            commitTranSaction();
+            trans.commit();
         } catch (Exception e) {
+            trans.rollback();
             e.printStackTrace();
             return false;
         }
@@ -76,16 +81,14 @@ public abstract class Repository<Entity, Id, Response> {
     public Entity findById(Id id){
         try {
             Entity entity;
-            session = HibernateUtil.getFACTORY().openSession();
+            session = HibernateUtil.getSession();
             String hql = "SELECT a FROM " + className + " a WHERE id = :id";
             Query query = session.createQuery(hql);
             query.setParameter("id", id);
             entity = (Entity) query.getSingleResult();
-            session.close();
             return entity;
         } catch (Exception e) {
             e.printStackTrace();
-            session.close();
             return null;
         }
     }
@@ -93,16 +96,14 @@ public abstract class Repository<Entity, Id, Response> {
     public Entity findByMa(String ma) {
         try {
             Entity entity;
-            session = HibernateUtil.getFACTORY().openSession();
+            session = HibernateUtil.getSession();
             String hql = "SELECT a FROM " + className + " a WHERE ma = :ma";
             Query query = session.createQuery(hql);
             query.setParameter("ma", ma);
             entity = (Entity) query.getSingleResult();
-            session.close();
             return entity;
         } catch (Exception e) {
             e.printStackTrace();
-            session.close();
             return null;
         }     
     }

@@ -1,7 +1,9 @@
 package views;
 
+import domainmodels.ChiTietSP;
 import domainmodels.HoaDon;
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -11,33 +13,32 @@ import java.util.UUID;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
+import services.ChiTietSPService;
 import services.HoaDonChiTietService;
 import services.HoaDonService;
+import services.impl.ChiTietSPServiceImpl;
 import services.impl.HoaDonServiceImpl;
-import services.impl.SanPhamServiceImpl;
-import viewmodels.HoaDonChiTietResponse;
-import viewmodels.SanPhamResponse;
-import services.SanPhamService;
+import viewmodels.SaleViewHoaDonChiTietResponse;
+import viewmodels.SaleViewSanPhamResponse;
 import services.impl.HoaDonChiTietServiceImpl;
 import utils.HibernateUtil;
-import viewmodels.HoaDonResponse;
+import viewmodels.SaleViewHoaDonResponse;
 
 /**
  *
  * @author sonpt_ph19600
  */
-
 public class ViewBanhang extends javax.swing.JFrame {
 
     private final DefaultTableModel modelSanPham;
     private final DefaultTableModel modelGioHang;
     private final DefaultTableModel modelHoaDon;
-    private final SanPhamService sanPhamService;
+    private final ChiTietSPService chiTietSanPhamService;
     private final HoaDonService hoaDonService;
     private final HoaDonChiTietService hoaDonChiTietService;
-    private List<SanPhamResponse> listSanPhamResponse;
-    private Map<UUID, HoaDonChiTietResponse> mapGioHang;
-    private List<HoaDonResponse> listHoaDonResponse;
+    private List<SaleViewSanPhamResponse> listSanPhamResponse;
+    private Map<UUID, SaleViewHoaDonChiTietResponse> mapGioHang;
+    private List<SaleViewHoaDonResponse> listHoaDonResponse;
 
     public ViewBanhang() {
         initComponents();
@@ -45,7 +46,7 @@ public class ViewBanhang extends javax.swing.JFrame {
         modelSanPham = (DefaultTableModel) tblSanPham.getModel();
         modelGioHang = (DefaultTableModel) tblGioHang.getModel();
         modelHoaDon = (DefaultTableModel) tblHoaDon.getModel();
-        sanPhamService = new SanPhamServiceImpl();
+        chiTietSanPhamService = new ChiTietSPServiceImpl();
         hoaDonService = new HoaDonServiceImpl();
         hoaDonChiTietService = new HoaDonChiTietServiceImpl();
         mapGioHang = new HashMap<>();
@@ -57,17 +58,17 @@ public class ViewBanhang extends javax.swing.JFrame {
     private void loadTableChiTietSP() {
         modelSanPham.setRowCount(0);
         int index = 1;
-        listSanPhamResponse = sanPhamService.findAllByName(txtTimKiem.getText());
-        for (SanPhamResponse sp : listSanPhamResponse) {
+        listSanPhamResponse = chiTietSanPhamService.findAllByName(txtTimKiem.getText());
+        for (SaleViewSanPhamResponse sp : listSanPhamResponse) {
             modelSanPham.addRow(sp.toDataRow(index));
             index++;
         }
     }
 
-    private void loadTableHoaDon(List<HoaDonResponse> list) {
+    private void loadTableHoaDon(List<SaleViewHoaDonResponse> list) {
         modelHoaDon.setRowCount(0);
         int index = 1;
-        for (HoaDonResponse hd : list) {
+        for (SaleViewHoaDonResponse hd : list) {
             modelHoaDon.addRow(hd.toDataRow(index));
             index++;
         }
@@ -76,8 +77,8 @@ public class ViewBanhang extends javax.swing.JFrame {
     private void loadTableGioHang() {
         modelGioHang.setRowCount(0);
         int index = 1;
-        for (Map.Entry<UUID, HoaDonChiTietResponse> entry : mapGioHang.entrySet()) {
-            HoaDonChiTietResponse value = entry.getValue();
+        for (Map.Entry<UUID, SaleViewHoaDonChiTietResponse> entry : mapGioHang.entrySet()) {
+            SaleViewHoaDonChiTietResponse value = entry.getValue();
             modelGioHang.addRow(value.toDataRow(index));
             index++;
         }
@@ -519,7 +520,7 @@ public class ViewBanhang extends javax.swing.JFrame {
                     "Mời tạo hóa đơn hoặc chọn một hóa đơn để thêm sản phẩm");
             return;
         }
-        HoaDonResponse hoaDon = listHoaDonResponse.get(rowHoaDon);
+        SaleViewHoaDonResponse hoaDon = listHoaDonResponse.get(rowHoaDon);
         if (hoaDon.getTinhTrang() == 1) {
             JOptionPane.showMessageDialog(this, "Hóa đơn này đã được thanh toán");
             return;
@@ -530,15 +531,15 @@ public class ViewBanhang extends javax.swing.JFrame {
         }
         int row = tblSanPham.getSelectedRow();
         tblSanPham.clearSelection();
-        SanPhamResponse sanPham = listSanPhamResponse.get(row);
-        HoaDonChiTietResponse hoaDonChiTiet = mapGioHang.get(sanPham.getId());
+        SaleViewSanPhamResponse sanPham = listSanPhamResponse.get(row);
+        SaleViewHoaDonChiTietResponse hoaDonChiTiet = mapGioHang.get(sanPham.getId());
         String inputSoLuongStr = "";
         int loaiSuaSL = -1;
         if (hoaDonChiTiet != null) {
             loaiSuaSL = JOptionPane.showOptionDialog(this, "Sản phẩm đã tồn tại trong giỏ hàng. Bạn muốn?",
                     "Confirm", JOptionPane.OK_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE,
                     null, new Object[]{"Thêm SL", "Giảm SL", "Cancel"}, 0);
-            if (loaiSuaSL == -1 || loaiSuaSL == 3) {
+            if (loaiSuaSL == -1 || loaiSuaSL == 2) {
                 return;
             }
         }
@@ -570,7 +571,7 @@ public class ViewBanhang extends javax.swing.JFrame {
                 return;
             }
             UUID idHoaDon = listHoaDonResponse.get(tblHoaDon.getSelectedRow()).getId();
-            hoaDonChiTiet = new HoaDonChiTietResponse();
+            hoaDonChiTiet = new SaleViewHoaDonChiTietResponse();
             hoaDonChiTiet.setIdHoaDon(idHoaDon);
             hoaDonChiTiet.setIdChiTietSP(sanPham.getId());
             hoaDonChiTiet.setMaSP(sanPham.getMaSP());
@@ -620,7 +621,7 @@ public class ViewBanhang extends javax.swing.JFrame {
         loadTableHoaDon(listHoaDonResponse);
         int size = listHoaDonResponse.size();
         for (int i = 0; i < size; i++) {
-            HoaDonResponse hoaDon = listHoaDonResponse.get(i);
+            SaleViewHoaDonResponse hoaDon = listHoaDonResponse.get(i);
             if (hoaDon.getId().compareTo(hoaDonMoi.getId()) == 0) {
                 tblHoaDon.addRowSelectionInterval(i, i);
                 loadFormHoaDon(i);
@@ -636,7 +637,7 @@ public class ViewBanhang extends javax.swing.JFrame {
             return;
         }
 
-        HoaDonResponse hoaDon = listHoaDonResponse.get(rowHoaDon);
+        SaleViewHoaDonResponse hoaDon = listHoaDonResponse.get(rowHoaDon);
         if (hoaDon.getTinhTrang() == 1) {
             JOptionPane.showMessageDialog(this, "Hóa đơn đã được thanh toán");
             return;
@@ -681,9 +682,9 @@ public class ViewBanhang extends javax.swing.JFrame {
         int row = tblHoaDon.getSelectedRow();
         loadFormHoaDon(row);
         mapGioHang.clear();
-        List<HoaDonChiTietResponse> list = hoaDonChiTietService.
+        List<SaleViewHoaDonChiTietResponse> list = hoaDonChiTietService.
                 search(listHoaDonResponse.get(row).getId());
-        for (HoaDonChiTietResponse hdct : list) {
+        for (SaleViewHoaDonChiTietResponse hdct : list) {
             mapGioHang.put(hdct.getIdChiTietSP(), hdct);
         }
         loadTableGioHang();
@@ -728,9 +729,13 @@ public class ViewBanhang extends javax.swing.JFrame {
             txtTienThua.setText("");
             return;
         }
-        Double tienKhachDua = 0d;
+        BigDecimal tienKhachDua = null;
         try {
-            tienKhachDua = Double.parseDouble(tienKhachDuaStr);
+            tienKhachDua = new BigDecimal(tienKhachDuaStr);
+            if (tienKhachDua.compareTo(BigDecimal.ZERO) == -1) {
+                JOptionPane.showMessageDialog(this, "Tiền khách đưa phải lớn hơn 0");
+                return;
+            }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Tiền khách đưa là số");
             e.printStackTrace();
@@ -741,7 +746,11 @@ public class ViewBanhang extends javax.swing.JFrame {
             return;
         }
         BigDecimal tongTien = new BigDecimal(tongTienStr);
-        txtTienThua.setText(BigDecimal.valueOf(tienKhachDua).subtract(tongTien).toString());
+        BigDecimal tienThua = tienKhachDua.subtract(tongTien);
+        if (tienThua.compareTo(BigDecimal.ZERO) == 1) {
+            DecimalFormat format = new DecimalFormat("#,###");
+            txtTienThua.setText(format.format(tienThua));
+        }       
     }//GEN-LAST:event_txtTienKhachDuaCaretUpdate
 
     public static void main(String args[]) {

@@ -1,8 +1,10 @@
 package services.impl;
 
+import java.util.List;
 import java.util.UUID;
 import repositories.ChiTietSPRepository;
 import services.ChiTietSPService;
+import viewmodels.SaleViewSanPhamResponse;
 
 /**
  *
@@ -16,4 +18,9 @@ public class ChiTietSPServiceImpl implements ChiTietSPService{
     public ChiTietSPServiceImpl() {
         chiTietSPRepository = new ChiTietSPRepository();
     }
+    
+    public List<SaleViewSanPhamResponse> findAllByName(String name){
+        return chiTietSPRepository.findAllByName(name);
+    }
+    
 }

@@ -187,7 +187,7 @@ public class QLNSX extends javax.swing.JFrame {
         NSX nsx = new NSX();
         nsx.setMa(ma);
         nsx.setTen(ten);
-        JOptionPane.showMessageDialog(this, service.save(nsx));
+        JOptionPane.showMessageDialog(this, service.insert(nsx));
         loadTable();
     }//GEN-LAST:event_btnThemActionPerformed
 

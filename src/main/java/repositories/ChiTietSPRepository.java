@@ -1,6 +1,7 @@
 package repositories;
 
 import domainmodels.ChiTietSP;
+import java.util.ArrayList;
 import utils.HibernateUtil;
 import java.util.List;
 import java.util.UUID;
@@ -9,39 +10,55 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import repositories.Repository;
 import viewmodels.ChiTietSPResponse;
+import viewmodels.SaleViewHoaDonChiTietResponse;
+import viewmodels.SaleViewSanPhamResponse;
 
 /**
  *
  * @author sonpt_ph19600
  */
-
 public class ChiTietSPRepository extends Repository<ChiTietSP, UUID, ChiTietSPResponse> {
-    
-    public boolean updateSoLuong(int soLuong, UUID id) {
+
+    public boolean updateSoLuong(List<SaleViewHoaDonChiTietResponse> list) {
         try {
-            Query query = session.createQuery("UPDATE ChiTietSP SET SoLuongTon = SoLuongTon - :soLuong"
-                    + " WHERE id = :id");
-            query.setParameter("soLuong", soLuong);
-            query.setParameter("id", id);
-            query.executeUpdate();
+            String hql = "UPDATE ChiTietSP SET SoLuongTon = SoLuongTon - :soLuong"
+                        + " WHERE id = :id";
+            session = HibernateUtil.getSession();
+            trans = session.beginTransaction();            
+            for (SaleViewHoaDonChiTietResponse item : list) {   
+                Query query = session.createQuery(hql);
+                query.setParameter("soLuong", item.getSoLuongSP());
+                query.setParameter("id", item.getIdChiTietSP());
+                query.executeUpdate();
+            }
+            trans.commit();
             return true;
         } catch (Exception e) {
             trans.rollback();
-            session.close();
             e.printStackTrace();
             return false;
         }
     }
 
-    @Override
-    public List<ChiTietSPResponse> getAll() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public List<SaleViewSanPhamResponse> findAllByName(String name) {
+        List<SaleViewSanPhamResponse> list = new ArrayList<>();
+        try {
+            session = HibernateUtil.getSession();
+            String hql = "SELECT new viewmodels.SaleViewSanPhamResponse"
+                    + "(a.id, a.sanPham.ma, a.sanPham.ten, a.namBH, a.moTa, a.soLuongTon, a.giaNhap, a.giaBan) "
+                    + " FROM ChiTietSP a WHERE a.sanPham.ten LIKE CONCAT('%',:name,'%')";
+            Query query = session.createQuery(hql);
+            query.setParameter("name", name);
+            list = query.getResultList();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
     }
 
     @Override
-    public ChiTietSP findById(UUID id) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public ChiTietSP findByMa(String ma) {
+        throw new UnsupportedOperationException("Chua ho tro ham nay");
     }
-
     
 }

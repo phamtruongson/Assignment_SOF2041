@@ -14,24 +14,31 @@ import viewmodels.NSXResponse;
  */
 public class NSXServiceImpl implements NSXService{
 
-    private NSXRepository repository;
+    private NSXRepository nSXRepository;
     
     public NSXServiceImpl() {
-        repository = new NSXRepository();
+        nSXRepository = new NSXRepository();
     }   
 
     @Override
     public List<NSXResponse> getAll() {
-        return repository.getAll();
+        return nSXRepository.getAll();
     }
 
     @Override
-    public String save(NSX nsx) {
-        NSX nsxFind = repository.findByMa(nsx.getMa());
+    public String insert(NSX nsx) {
+        if (nsx.getMa().equals("")) {
+            return "Mã không được để trống";
+        }
+        if (nsx.getTen().equals("")) {
+            return "Tên không được để trống";
+        }
+        NSX nsxFind = nSXRepository.findByMa(nsx.getMa());
         if (nsxFind != null) {
             return "Trùng mã sản phẩm";
         }
-        if (repository.saveOrUpdate(nsx)) {
+        nsx = nSXRepository.saveOrUpdate(nsx);
+        if (nsx != null) {
             return "Thêm thành công";
         } else {
             return "Lỗi hệ thống. Thêm thất bại";
@@ -40,13 +47,23 @@ public class NSXServiceImpl implements NSXService{
 
     @Override
     public String update(NSX nsx) {
-        NSX nsxFind = repository.findById(nsx.getId());
-        if (nsxFind == null) {
+        NSX nsxFindByID = nSXRepository.findById(nsx.getId());
+        
+        
+        if (nsxFindByID == null) {
             return "NSX không tồn tại";
         }
-        nsxFind.setMa(nsx.getMa());
-        nsxFind.setTen(nsx.getTen());
-        if (repository.saveOrUpdate(nsxFind)) {
+        if (!nsx.getMa().equals(nsxFindByID.getMa())) {
+            NSX nsxFindByMa = nSXRepository.findByMa(nsx.getMa());
+            if (nsxFindByMa != null) {
+                return "Trùng mã sản phẩm";
+            } else {
+                nsxFindByID.setMa(nsx.getMa());
+            }
+        }        
+        nsxFindByID.setTen(nsx.getTen());
+        nsx = nSXRepository.saveOrUpdate(nsxFindByID);
+        if (nsx != null) {
             return "Sửa thành công";
         } else {
             return "Lỗi. Sửa thất bại";
@@ -55,11 +72,11 @@ public class NSXServiceImpl implements NSXService{
 
     @Override
     public String delete(UUID id) {
-        NSX nsxFind = repository.findById(id);
+        NSX nsxFind = nSXRepository.findById(id);
         if (nsxFind == null) {
             return "NSX không tồn tại";
         }
-        if (repository.detele(nsxFind)) {
+        if (nSXRepository.detele(nsxFind)) {
             return "Xóa thành công";
         } else {
             return "Lỗi. Xóa thất bại";

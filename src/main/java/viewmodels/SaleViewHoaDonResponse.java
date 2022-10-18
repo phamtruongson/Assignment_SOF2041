@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class HoaDonResponse {
+public class SaleViewHoaDonResponse {
 
     private UUID id;
     private String maHD;

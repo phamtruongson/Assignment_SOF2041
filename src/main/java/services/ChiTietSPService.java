@@ -1,6 +1,8 @@
 package services;
 
+import java.util.List;
 import java.util.UUID;
+import viewmodels.SaleViewSanPhamResponse;
 
 /**
  *
@@ -8,5 +10,7 @@ import java.util.UUID;
  */
 
 public interface ChiTietSPService {
+    
+    List<SaleViewSanPhamResponse> findAllByName(String name);
     
 }

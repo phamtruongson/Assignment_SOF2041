@@ -19,9 +19,4 @@ public class NSXRepository extends Repository<NSX, UUID, NSXResponse> {
         resCon = "new viewmodels.NSXResponse (a.id, a.ma, a.ten)";
     }
 
-//    @Override
-//    public NSX findById(UUID id) {
-//        throw new UnsupportedOperationException("Chua ho tro ham nay");
-//    }
-
 }

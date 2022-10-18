@@ -7,6 +7,7 @@ package services.impl;
 import domainmodels.ChiTietSP;
 import domainmodels.HoaDon;
 import domainmodels.HoaDonChiTiet;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import repositories.ChiTietSPRepository;
@@ -14,7 +15,7 @@ import repositories.HoaDonChiTietRepository;
 import repositories.HoaDonChiTietRepository;
 import repositories.HoaDonRepository;
 import services.HoaDonChiTietService;
-import viewmodels.HoaDonChiTietResponse;
+import viewmodels.SaleViewHoaDonChiTietResponse;
 
 /**
  *
@@ -36,22 +37,18 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService{
     }
     
     @Override
-    public List<HoaDonChiTietResponse> search(UUID idHoaDon) {
-        return hoaDonChiTietRepository.search(idHoaDon);
+    public List<SaleViewHoaDonChiTietResponse> search(UUID idHoaDon) {
+        return hoaDonChiTietRepository.findCustomById(idHoaDon);
     }
 
     @Override
-    public String pay(List<HoaDonChiTietResponse> list) {
+    public String pay(List<SaleViewHoaDonChiTietResponse> list) {
         try {
             boolean check = true;
             check = hoaDonRepository.updateTinhTrang(list.get(0).getIdHoaDon(), 1);
-            chiTietSPRepository.openTranSaction();
-            for (HoaDonChiTietResponse item : list) {
-                check = chiTietSPRepository.updateSoLuong(item.getSoLuongSP(), item.getIdChiTietSP());
-            }
-            chiTietSPRepository.commitTranSaction();
-            hoaDonChiTietRepository.openTranSaction();
-            for (HoaDonChiTietResponse item : list) {
+            check = chiTietSPRepository.updateSoLuong(list);
+            List<HoaDonChiTiet> listHoaDonChiTiet = new ArrayList<>();
+            for (SaleViewHoaDonChiTietResponse item : list) {
                 HoaDonChiTiet hoaDonChiTiet = new HoaDonChiTiet();
                 ChiTietSP chiTietSP = new ChiTietSP();
                 chiTietSP.setId(item.getIdChiTietSP());
@@ -61,9 +58,9 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService{
                 hoaDonChiTiet.setIdHoaDon(hoaDon);
                 hoaDonChiTiet.setSoLuong(item.getSoLuongSP());
                 hoaDonChiTiet.setDonGia(item.getDonGia());
-                check = hoaDonChiTietRepository.save(hoaDonChiTiet);
+                listHoaDonChiTiet.add(hoaDonChiTiet);
             }
-            hoaDonChiTietRepository.commitTranSaction();
+            check = hoaDonChiTietRepository.saveAll(listHoaDonChiTiet);
             if (check == false) {                
                 return "Thanh toán thất bại";
             }

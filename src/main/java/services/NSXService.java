@@ -13,7 +13,7 @@ public interface NSXService {
     
     List<NSXResponse> getAll();
     
-    String save(NSX nsx);
+    String insert(NSX nsx);
     
     String update(NSX nsx);
     
