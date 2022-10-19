@@ -18,5 +18,13 @@ public class NSXRepository extends Repository<NSX, UUID, NSXResponse> {
         className = NSX.class.getName();
         resCon = "new viewmodels.NSXResponse (a.id, a.ma, a.ten)";
     }
+    
+    public static void main(String[] args) {
+        NSXRepository nsx = new NSXRepository();
+        List<NSX> list = nsx.getAll();
+        for (NSX x : list) {
+            System.out.println(x.toString());
+        }
+    }
 
 }

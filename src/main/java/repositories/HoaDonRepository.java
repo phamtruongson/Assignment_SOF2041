@@ -18,7 +18,7 @@ import viewmodels.SaleViewHoaDonResponse;
 
 public class HoaDonRepository extends Repository<HoaDon, UUID, SaleViewHoaDonResponse>{
 
-    public List<SaleViewHoaDonResponse> getAll() {        
+    public List<SaleViewHoaDonResponse> getAllResponse() {        
         List<SaleViewHoaDonResponse> list = new ArrayList<>();
         try {            
             session = HibernateUtil.getSession();          
@@ -49,19 +49,6 @@ public class HoaDonRepository extends Repository<HoaDon, UUID, SaleViewHoaDonRes
         }
         return list;
     }
-
-//    public HoaDon save(HoaDon hoaDon) {
-//        try {
-//            session
-//            session.save(hoaDon);
-//            return hoaDon;
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            trans.rollback();
-//            session.close();
-//            return null;
-//        }
-//    }   
     
     public boolean updateTinhTrang(UUID id, int tinhTrang){
         try {     

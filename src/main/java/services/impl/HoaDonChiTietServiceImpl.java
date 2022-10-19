@@ -50,14 +50,18 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService{
             List<HoaDonChiTiet> listHoaDonChiTiet = new ArrayList<>();
             for (SaleViewHoaDonChiTietResponse item : list) {
                 HoaDonChiTiet hoaDonChiTiet = new HoaDonChiTiet();
+                
                 ChiTietSP chiTietSP = new ChiTietSP();
                 chiTietSP.setId(item.getIdChiTietSP());
                 hoaDonChiTiet.setIdChiTietSP(chiTietSP);
+                
                 HoaDon hoaDon = new HoaDon();
                 hoaDon.setId(item.getIdHoaDon());
+                
                 hoaDonChiTiet.setIdHoaDon(hoaDon);
                 hoaDonChiTiet.setSoLuong(item.getSoLuongSP());
                 hoaDonChiTiet.setDonGia(item.getDonGia());
+                
                 listHoaDonChiTiet.add(hoaDonChiTiet);
             }
             check = hoaDonChiTietRepository.saveAll(listHoaDonChiTiet);

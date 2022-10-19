@@ -11,12 +11,14 @@ import viewmodels.NSXResponse;
  */
 public interface NSXService {
     
-    List<NSXResponse> getAll();
+    List<NSXResponse> getAllResponse();
     
     String insert(NSX nsx);
     
     String update(NSX nsx);
     
     String delete(UUID id);
+    
+    List<NSX> getAll();
     
 }

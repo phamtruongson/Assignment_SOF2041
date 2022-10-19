@@ -1,7 +1,7 @@
 package domainmodels;
 
 import java.io.Serializable;
-import java.sql.Date;
+import java.util.Date;
 import java.util.UUID;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -73,4 +73,5 @@ public class NhanVien implements Serializable {
     
     @Column(name = "TrangThai")
     private Integer trangThai;
+    
 }

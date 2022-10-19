@@ -19,6 +19,12 @@ import viewmodels.SaleViewSanPhamResponse;
  */
 public class ChiTietSPRepository extends Repository<ChiTietSP, UUID, ChiTietSPResponse> {
 
+    public ChiTietSPRepository() {
+        className = ChiTietSP.class.getName();
+        resCon = "new viewmodels.ChiTietSPResponse (a.id, a.sanPham.ten, a.nsx.ten, a.mauSac.ten, "
+                + "a.dongSP.ten, a.namBH, a.moTa, a.soLuongTon, a.giaBan, a.giaNhap)";
+    }
+
     public boolean updateSoLuong(List<SaleViewHoaDonChiTietResponse> list) {
         try {
             String hql = "UPDATE ChiTietSP SET SoLuongTon = SoLuongTon - :soLuong"
@@ -60,5 +66,6 @@ public class ChiTietSPRepository extends Repository<ChiTietSP, UUID, ChiTietSPRe
     public ChiTietSP findByMa(String ma) {
         throw new UnsupportedOperationException("Chua ho tro ham nay");
     }
+
     
 }

@@ -24,7 +24,7 @@ public class HoaDonServiceImpl implements HoaDonService{
     
     @Override
     public List<SaleViewHoaDonResponse> getAll() {
-        return hoaDonRepository.getAll();
+        return hoaDonRepository.getAllResponse();
     }
     
     @Override

@@ -21,11 +21,25 @@ public abstract class Repository<Entity, Id, Response> {
     protected String className;
     protected String resCon;
     
-    public List<Response> getAll(){
+    public List<Response> getAllResponse(){
         List<Response> list = new ArrayList<>();
         try {          
             session = HibernateUtil.getSession();
             String hql = "SELECT " + resCon + " FROM " + className + " a";
+            Query query = session.createQuery(hql);
+            list = query.getResultList();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+        return list;
+    }
+    
+    public List<Entity> getAll(){
+        List<Entity> list = new ArrayList<>();
+        try {          
+            session = HibernateUtil.getSession();
+            String hql = "SELECT a FROM " + className + " a";
             Query query = session.createQuery(hql);
             list = query.getResultList();
         } catch (Exception e) {
@@ -82,7 +96,7 @@ public abstract class Repository<Entity, Id, Response> {
         try {
             Entity entity;
             session = HibernateUtil.getSession();
-            String hql = "SELECT a FROM " + className + " a WHERE id = :id";
+            String hql = "SELECT a FROM " + className + " a WHERE a.id = :id";
             Query query = session.createQuery(hql);
             query.setParameter("id", id);
             entity = (Entity) query.getSingleResult();
@@ -97,7 +111,7 @@ public abstract class Repository<Entity, Id, Response> {
         try {
             Entity entity;
             session = HibernateUtil.getSession();
-            String hql = "SELECT a FROM " + className + " a WHERE ma = :ma";
+            String hql = "SELECT a FROM " + className + " a WHERE a.ma = :ma";
             Query query = session.createQuery(hql);
             query.setParameter("ma", ma);
             entity = (Entity) query.getSingleResult();

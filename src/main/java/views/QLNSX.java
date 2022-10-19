@@ -27,7 +27,7 @@ public class QLNSX extends javax.swing.JFrame {
     }
     
     private void loadTable(){
-        listNSX = service.getAll();
+        listNSX = service.getAllResponse();
         if (listNSX == null) {
             JOptionPane.showMessageDialog(this, "Không có dữ liệu");
             return;
