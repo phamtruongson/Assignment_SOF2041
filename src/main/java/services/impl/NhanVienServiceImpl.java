@@ -52,9 +52,16 @@ public class NhanVienServiceImpl implements NhanVienService {
         if (nhanVien.getSdt().isEmpty()) {
             return "Số điện thoại không được để trống";
         }
+        if (nhanVien.getSdt().matches("^0{1}\\d{10}$")) {
+            return "Số điện thoại phải là số và gồm 10 ký tự";
+        }        
         if (nhanVien.getMatKhau().isEmpty()) {
             return "Mật khẩu không được để trống";
         }
+        if (!nhanVien.getMatKhau().matches("((?=.*\\\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%!]).{6,20})")) {
+            return "Mật khẩu phải gồm 1 ký tự hoa, 1 ký tự thường, 1 số và 1 ký tự đặc biệt";
+        }
+        
         if (nhanVienRepository.saveOrUpdate(nhanVien) == null) {
             return "Lỗi. Thêm thất bại";
         } else {
@@ -99,8 +106,14 @@ public class NhanVienServiceImpl implements NhanVienService {
         if (nhanVien.getSdt().isEmpty()) {
             return "Số điện thoại không được để trống";
         }
+        if (nhanVien.getSdt().matches("^0{1}\\d{10}$")) {
+            return "Số điện thoại phải là số và gồm 10 ký tự";
+        }
         if (nhanVien.getMatKhau().isEmpty()) {
             return "Mật khẩu không được để trống";
+        }
+        if (!nhanVien.getMatKhau().matches("((?=.*\\\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%!]).{6,20})")) {
+            return "Mật khẩu phải gồm 1 ký tự hoa, 1 ký tự thường, 1 số và 1 ký tự đặc biệt";
         }
         nhanVienFindById.setTen(nhanVien.getTen());
         nhanVienFindById.setTenDem(nhanVien.getTenDem());
